@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////
 // include the custom colour palettes
 #include "ColorPalette.h"
-//#include "RgbModel.h"
+#include "RgbModel.h"
 #include "BlockViewDlg.h"
 #include "resource.h"
 #include "dbvisualstyle.h"
