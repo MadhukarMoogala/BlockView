@@ -664,7 +664,7 @@ bool CreateAtilImage(AcGsView *pView,
             {
               fileWriter.createImageFrame(pPipe->dataModel(), pPipe->size());
 
-              // At any rate you want to fetch the property from the write file descriptor then alter it and set it in…
+              // At any rate you want to fetch the property from the write file descriptor then alter it and set it inï¿½
               Atil::FormatCodecPropertyInterface *pProp = fileWriter.getProperty(Atil::FormatCodecPropertyInterface::kCompression);
               if (pProp != NULL) 
               {
@@ -709,7 +709,7 @@ bool CreateAtilImage(AcGsView *pView,
                       // So if that fails, resort to LZW now that it is patent free
                       if (pComp->selectCompression(TiffCompressionType::kLZW) == false) 
                       {
-                        // If that fails (and is shouldn’t, be) then set none.
+                        // If that fails (and is shouldnï¿½t, be) then set none.
                         pComp->selectCompression(TiffCompressionType::kNone);
                       }
                     }
@@ -728,7 +728,7 @@ bool CreateAtilImage(AcGsView *pView,
             // In ATIL every property is required to have a valid default value. 
             // So if a certain property is REQUIRED by the codec to save the file, then it is safe 
             // and proper to simply loop over all the possible properties, enquire if it is required 
-            // and simply set it with it’s default value
+            // and simply set it with itï¿½s default value
             Atil::FormatCodecPropertySetIterator* pPropsIter = fileWriter.newPropertySetIterator();
             // if ok
             if (pPropsIter)

@@ -74,6 +74,66 @@ public:
   }
 };
 
+class ZoomWindowDrawable : public AcGiDrawable
+{
+    AcGsView* m_pAcGsView;
+public:
+
+    ZoomWindowDrawable() {}
+    void setGsView(AcGsView* pView) { m_pAcGsView = pView; }
+
+    virtual Adesk::UInt32   subSetAttributes(AcGiDrawableTraits* traits)
+    {
+        traits->setTrueColor(AcCmEntityColor(200, 0, 0));
+        traits->setLinePattern(kDashed);
+        return kDrawableNone;
+    }
+    virtual Adesk::Boolean  subWorldDraw(AcGiWorldDraw* wd)
+    {
+        return Adesk::kFalse;
+    }
+    virtual void            subViewportDraw(AcGiViewportDraw* pViewportDraw)
+    {
+        AcGiViewportGeometry& geom = pViewportDraw->geometry();
+
+        AcGsDCRect view_rect;
+        m_pAcGsView->getViewport(view_rect);
+
+        int nViewportX = (view_rect.m_max.x - view_rect.m_min.x) + 1;
+        int nViewportY = (view_rect.m_max.y - view_rect.m_min.y) + 1;
+
+        double width  = mEndPoint.x - mStartPoint.x;
+        double height = mEndPoint.y - mStartPoint.y;
+
+        // flip y
+        mStartPoint.y = nViewportY - 1 - mStartPoint.y;
+
+        AcGePoint3d tl = mStartPoint;
+        AcGePoint3d tr(mStartPoint.x + width, mStartPoint.y, 0.0);
+
+        AcGePoint3d br(mStartPoint.x + width, mStartPoint.y - height, 0.0);
+        AcGePoint3d bl(mStartPoint.x, mStartPoint.y - height, 0.0);
+
+        geom.pushPositionTransform(kAcGiScreenPosition, AcGePoint2d(0, 0));
+
+        std::vector<AcGePoint3d> pts = { tl, tr, br, bl, tl };
+        geom.polyline((Adesk::UInt32)pts.size(), pts.data());
+
+        geom.popModelTransform();
+    }
+    virtual Adesk::Boolean  isPersistent(void) const
+    {
+        return Adesk::kFalse;
+    };
+    virtual AcDbObjectId    id(void) const
+    {
+        return AcDbObjectId::kNull;
+    }
+
+    AcGePoint3d mStartPoint;
+    AcGePoint3d mEndPoint;
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // CGsPreviewCtrl window
 
@@ -143,6 +203,7 @@ public:
   AcGsModel           *mpModel;
   AcGsModel           *mpGhostModel;
   OrbitGadget         mOrbitGadget;
+  ZoomWindowDrawable  mZoomWindowDrawable;
   bool mbModelCreated;
   bool mbPanning;
   bool mbOrbiting;

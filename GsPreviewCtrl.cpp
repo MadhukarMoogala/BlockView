@@ -220,6 +220,8 @@ void CGsPreviewCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   {
     mMouseDown = true;
     mMouseMoving = false;    
+    mpView->add(&mZoomWindowDrawable, mpGhostModel);
+    mZoomWindowDrawable.setGsView(mpView);
   }
   else
   {
@@ -240,6 +242,8 @@ void CGsPreviewCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
   if (mZooming && mMouseDown)
   {
+    mpView->erase(&mZoomWindowDrawable);
+
     // end zoom
     mZooming = false;
     mMouseDown = false;
@@ -292,12 +296,6 @@ void CGsPreviewCtrl::OnMouseMove(UINT nFlags, CPoint point)
       // if left button is down
       if (mMouseDown)
       {
-        if (mMouseMoving)
-        {
-          // erase the old rectangle
-          RubberRectangle(mStartPt, mEndPt);
-        }
-
         // draw the new rectangle
         RubberRectangle(mStartPt, point);
         mMouseMoving = true;
@@ -409,36 +407,13 @@ void CGsPreviewCtrl::OnSetFocus(CWnd* pOldWnd)
 // draws XOR ink Rectangle
 void CGsPreviewCtrl::RubberRectangle(CPoint startPt, CPoint endPt) 
 {
-  // get the device context for the client area
-  CDC *cdc = this->GetDC();
-  // if ok
-  if (cdc != NULL)
-  {
-    HDC hdc = cdc->GetSafeHdc();
-    // Create a black pen with a dotted style to draw the border of the rectangle.
-    HPEN gdiPen = CreatePen(PS_DOT, 1, RGB(0,0,0));
-    // Set the ROP cdrawint mode to XOR.
-    SetROP2(hdc, R2_XORPEN);
+    mZoomWindowDrawable.mStartPoint.x = startPt.x;
+    mZoomWindowDrawable.mStartPoint.y = startPt.y;
+    mZoomWindowDrawable.mEndPoint.x = endPt.x;
+    mZoomWindowDrawable.mEndPoint.y = endPt.y;
 
-    // Select the pen into the device context.
-    HGDIOBJ oldPen = SelectObject(hdc, gdiPen);
-
-    // Create a stock NULL_BRUSH brush and select it into the device
-    // context so that the rectangle isn't filled.
-    HGDIOBJ oldBrush = SelectObject(hdc, GetStockObject(NULL_BRUSH) );
-
-    // Now XOR the hollow rectangle on the Graphics object with
-    // a dotted outline.
-    Rectangle(hdc, startPt.x, startPt.y, endPt.x, endPt.y);
-
-    // Put the old stuff back where it was.
-    SelectObject(hdc, oldBrush); // no need to delete a stock object
-    SelectObject(hdc, oldPen);
-    DeleteObject(gdiPen);		// but we do need to delete the pen
-
-    // Return the device context to Windows.
-    this->ReleaseDC(cdc);
-  }
+    mpGhostModel->onModified(&mZoomWindowDrawable, nullptr);
+    Invalidate();
 }
 
 
