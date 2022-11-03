@@ -27,6 +27,8 @@
 #include "GsPreviewCtrl.h"	// Added by ClassView
 #include "resource.h"
 #include "afxwin.h"
+#include "adui.h"
+#include "acui.h"
 
 #if _MSC_VER > 1000
 #pragma once
