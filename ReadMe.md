@@ -75,8 +75,7 @@ msbuild /t:build /p:Configuration=Debug2023;Platform=x64 BlockView.vcxproj
 
 ## Demo
 
-<video src="https://github.com/MadhukarMoogala/BlockView/blob/master/demo.mp4" controls="controls" style="max-width: 600px;">
-</video>
+https://user-images.githubusercontent.com/6602398/199988476-434f757d-25cc-4a37-a293-7d0e4eee4576.mp4
 
 ## License
 
