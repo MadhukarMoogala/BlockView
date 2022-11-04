@@ -30,7 +30,7 @@
 //
 #include "acgi.h"
 #include <math.h>
-// Simple lighweight drawable to do orbit glyph
+// Simple lightweight drawable to do orbit glyph
 //
 class OrbitGadget : public AcGiDrawable
 {
