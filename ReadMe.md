@@ -3,8 +3,6 @@ Early version of Block view sample that shipped with ObjectARX SDK used GDI to d
 
 This sample is refactored to work with new DirectX API.
 
-
-
 ### Block View Sample Readme
 
 - Compile and load the AsdkBlockView.arx.
@@ -77,6 +75,8 @@ msbuild /t:build /p:Configuration=Debug2023;Platform=x64 BlockView.vcxproj
 
 ## Demo
 
+<video src="https://github.com/MadhukarMoogala/BlockView/blob/master/demo.mp4" controls="controls" style="max-width: 600px;">
+</video>
 
 ## License
 
